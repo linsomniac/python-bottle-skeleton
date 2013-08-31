@@ -41,7 +41,6 @@ class User(Base):
     name = Column(String(length=20), nullable=False)
     full_name = Column(String(length=60), nullable=False)
     email_address = Column(String(length=60), nullable=False)
-    crypted_password = Column(String(length=200))
 
 
 #  XXX Some sample data for testing the site

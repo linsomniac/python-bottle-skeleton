@@ -1,0 +1,32 @@
+<!-- %rebase layout title='New Rotation' -->
+
+<a href="{{app.get_url('index')}}">&lt;&lt;&lt; Back</a><br />
+
+<h1>Create New User</h1>
+
+%def render_field(field, desc=None, **kwargs):
+   <dt>{{!field.label}}</dt>
+   <dd>{{!field(**kwargs)}}
+   %if desc:
+      {{!desc}}
+   %end
+   %if field.errors:
+      <ul class=errors>
+      %for error in field.errors:
+         <li>{{ error }}</li>
+      %end
+      </ul>
+   %end
+   </dd>
+%end
+
+<form method="POST">
+   <dl>
+      %render_field(form.name, '(4-20 characters)</p>')
+      %render_field(form.full_name, size=60)
+      %render_field(form.email_address, size=40)
+      %render_field(form.password)
+      %render_field(form.confirm)
+   </dl>
+   <p><input type=submit value="Create">
+</form>

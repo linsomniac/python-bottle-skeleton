@@ -90,18 +90,23 @@ def routes(app):
 
         return dict(locals().items() + [('app', app)])
 
-    @app.route('/database_form')
-    @view('form')
-    def database_form():
-        'A sample of interacting with a form and a dabase.'
-
-        db = dbwrap.session()
+    @app.get('/new-user', name='user_new')
+    @app.post('/new-user')
+    @view('user-new')
+    def new_user():
+        'A sample of interacting with a form and a database.'
 
         form = NewUserFormProcessor(request.forms.decode())
-        if request.method == 'POST' and form.validate():
-            #  XXX Do something with form fields here
 
-            #  if successful
+        if request.method == 'POST' and form.validate():
+            db = dbwrap.session()
+
+            sean = model.User(
+                    full_name=form.full_name.data, name=form.name.data,
+                    email_address=form.email_address.data)
+            db.add(sean)
+            db.commit()
+
             redirect(app.get_url('user', username=form.name.data))
 
         return dict(locals().items() + [('app', app)])
