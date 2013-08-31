@@ -1,0 +1,7 @@
+<a href="{{app.get_url('index')}}">&lt;&lt;&lt; Back</a><br />
+
+<h1>Users</h1>
+
+%for user in users:
+   <a href="{{app.get_url('user', username=user.name)}}">{{user.full_name}}</a><br />
+%end

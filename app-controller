@@ -27,10 +27,12 @@ if __name__ == '__main__':
         sys.exit(0)
 
     if 'test-server' in sys.argv[1:]:
+        'Run stand-alone test server'
         sys.path.append('tests')
 
         if os.environ.get('DBCREDENTIALSTR') == 'sqlite:///:memory:':
             model.initdb()
+            model.create_sample_data()
         app = website.web_interface()
         bottle.run(app, reloader=True, host='127.0.0.1', port=8080)
         sys.exit(0)

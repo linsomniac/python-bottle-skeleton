@@ -23,7 +23,8 @@ def web_interface():
 
 #  Form validation example
 class NewUserFormProcessor(Form):
-    username = TextField('Username', [validators.Length(min=4, max=25)])
+    name = TextField('Username', [validators.Length(min=4, max=25)])
+    full_name = TextField('Full Name', [validators.Length(min=4, max=60)])
     email_address = TextField(
             'Email Address', [validators.Length(min=6, max=35)])
     password = PasswordField(
@@ -42,27 +43,38 @@ def routes(app):
         'Serve static content.'
         return static_file(path, root='static/')
 
-    @app.route('/')
+    @app.route('/', name='index')
     @view('index')
     def index():
         'A simple form that shows the date'
 
         import datetime
 
-        date = datetime.datetime.now()
+        now = datetime.datetime.now()
 
-        return locals()
+        return dict(locals().items() + [('app', app)])
 
-    @app.route('/users')
+    @app.route('/users', name='user_list')
     @view('users')
-    def index():
+    def user_list():
         'A simple page from a dabase.'
 
         db = dbwrap.session()
 
-        users = db.query(model.User).order_by(model.User.username)
+        users = db.query(model.User).order_by(model.User.name)
 
-        return locals()
+        return dict(locals().items() + [('app', app)])
+
+    @app.route('/users/<username>', name='user')
+    @view('user')
+    def user_info(username):
+        'A simple page from a dabase.'
+
+        db = dbwrap.session()
+
+        user = db.query(model.User).filter_by(name=username).first()
+
+        return dict(locals().items() + [('app', app)])
 
     @app.route('/form')
     @view('form')
@@ -74,8 +86,9 @@ def routes(app):
             #  XXX Do something with form fields here
 
             #  if successful
-            redirect('/users/%s' % form.username.data)
-        return locals()
+            redirect('/users/%s' % form.name.data)
+
+        return dict(locals().items() + [('app', app)])
 
     @app.route('/database_form')
     @view('form')
@@ -89,5 +102,6 @@ def routes(app):
             #  XXX Do something with form fields here
 
             #  if successful
-            redirect('/users/%s' % form.username.data)
-        return locals()
+            redirect(app.get_url('user', username=form.name.data))
+
+        return dict(locals().items() + [('app', app)])
