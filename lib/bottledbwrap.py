@@ -81,8 +81,7 @@ class DbWrapper:
             else:
                 path_list = (
                         [
-                            '/etc/dbcredentials-tummyoncall',
-                            'etc/dbcredentials',
+                            'conf/dbcredentials',
                             'dbcredentials',
                         ])
 
