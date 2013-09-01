@@ -5,15 +5,15 @@
 
 from sqlalchemy.ext.declarative import declarative_base
 Base = declarative_base()
-from sqlalchemy import event, Column, Integer, String, ForeignKey, DateTime
+from sqlalchemy import event, Column, Integer, String, ForeignKey
 from sqlalchemy.exc import DisconnectionError
 from sqlalchemy.orm import relationship, backref
 from sqlalchemy.pool import Pool
-import datetime
-from bottledbwrap import dbwrap
 
 def initdb():
     '''Initialize the database structure.'''
+    from bottledbwrap import dbwrap
+
     dbwrap.connect()
     dbwrap.Base.metadata.create_all()
 
@@ -42,9 +42,17 @@ class User(Base):
     full_name = Column(String(length=60), nullable=False)
     email_address = Column(String(length=60), nullable=False)
 
+def user_by_name(name):
+    from bottledbwrap import dbwrap
+    db = dbwrap.session()
+    user = db.query(User).filter_by(name=name).first()
+    return user
+
 
 #  XXX Some sample data for testing the site
 def create_sample_data():
+    from bottledbwrap import dbwrap
+
     dbwrap.connect()
     dbwrap.Base.metadata.create_all()
     db = dbwrap.session()

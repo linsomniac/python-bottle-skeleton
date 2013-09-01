@@ -70,9 +70,7 @@ def routes(app):
     def user_info(username):
         'A simple page from a dabase.'
 
-        db = dbwrap.session()
-
-        user = db.query(model.User).filter_by(name=username).first()
+        user = model.user_by_name(username)
 
         return dict(locals().items() + [('app', app)])
 

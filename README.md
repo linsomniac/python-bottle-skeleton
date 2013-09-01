@@ -52,6 +52,10 @@ Setting up Apache:
     it on your Apache config directory ("/etc/apache2/sites-enabled",
     "/etc/httpd/conf.d").
 
+To run tests:
+
+  * Run "make" in the top-level directory.
+
 Structure of Project
 --------------------
 
@@ -86,6 +90,12 @@ There are the following components to the project:
       up a newer copy, but this skeleton is tested against the version here.
 
     * `bottledbwrap.py`: See below in the "About bottledbwrap" section.
+
+  * `tests`: Tests of the web application code, hitting it through the
+    routed URLs in "website.py".  Other code tests can be done in the normal
+    way, see [my python-unittest-skeleton
+    project](https://github.com/linsomniac/python-unittest-skeleton) for more
+    code testing examples.
 
 About bottledbwrap
 ------------------
