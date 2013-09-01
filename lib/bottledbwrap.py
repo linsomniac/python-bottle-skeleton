@@ -6,7 +6,7 @@
 '''Database connection wrapper for python-bottle-skeleton.
 '''
 
-from model import *     # noqa
+from model import Base
 
 
 class DbWrapper:
@@ -73,6 +73,9 @@ class DbWrapper:
         '''
         import os
         import sys
+
+        if self.Sessions:
+            return
 
         if path_list is None:
             if 'DBCREDENTIALS' in os.environ:
