@@ -3,7 +3,7 @@
    <title>{{title or 'No title'}}</title>
 </head>
 <body>
-   %if 'parent_url' in dir():
+   %if defined('parent_url'):
       <a href="{{parent_url}}">&lt;&lt;&lt; Back</a><br />
    %end
 
