@@ -15,6 +15,7 @@
 def website():
     app = bottle.Bottle()
 
+    bottle.BaseTemplate.defaults['app'] = app
     bottle.TEMPLATE_PATH.insert(0, 'views')
 
     #  a couple index URL aliases so the main page renders
@@ -31,7 +32,7 @@ def website():
         now = datetime.datetime.now()
 
         #  XXX Return variables for use in page rendering
-        return {'now': now, 'app': app}
+        return {'now': now}
 
     return app
 
