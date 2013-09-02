@@ -1,7 +1,21 @@
 #!/usr/bin/env python
 #
-#  Copyright (c) 2013, Sean Reifschneider, tummy.com, ltd.
-#  All Rights Reserved.
+#  This is the main application controller and management script.
+#  This can be used to interface the application to a WSGI server, CGI, a
+#  stand-alone server on 127.0.0.1:8080, or to create the database structure
+#  and load test data.
+#
+#  NOTE: This file can probably be used without modification.
+#
+#  See the README.md for more information
+#
+#  Written by Sean Reifschneider <jafo@jafo.ca>, 2013
+#
+#  Part of the python-bottle-skeleton project at:
+#
+#      https://github.com/linsomniac/python-bottle-skeleton
+#
+#  I hereby place this work, python-bottle-wrapper, into the public domain.
 
 import sys
 import os
@@ -9,12 +23,24 @@ import model
 import bottle
 import website
 
+
+def web_interface():
+    '''Create an application instance.  You probably don't need to modify
+    this, it is just here to simplify other code.'''
+
+    app = bottle.Bottle()
+
+    website.routes(app)
+
+    return app
+
+
 if __name__.startswith('_mod_wsgi_'):
     os.chdir(os.path.dirname(__file__))
     sys.path.append('lib')
     sys.path.append('.')
 
-    application = website.web_interface()
+    application = web_interface()
 
 if __name__ == '__main__':
     sys.path.append('lib')
@@ -22,7 +48,7 @@ if __name__ == '__main__':
 
     if os.environ.get('GATEWAY_INTERFACE'):
         #  Called from CGI
-        app = website.web_interface()
+        app = web_interface()
         bottle.run(app, server=bottle.CGIServer)
         sys.exit(0)
 
@@ -33,7 +59,8 @@ if __name__ == '__main__':
         if os.environ.get('DBCREDENTIALSTR') == 'sqlite:///:memory:':
             model.initdb()
             model.create_sample_data()
-        app = website.web_interface()
+        app = web_interface()
+        bottle.debug(True)
         bottle.run(app, reloader=True, host='127.0.0.1', port=8080)
         sys.exit(0)
 

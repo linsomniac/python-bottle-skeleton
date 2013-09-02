@@ -1,27 +1,32 @@
 #!/usr/bin/env python
 #
-#  Copyright (c) 2013, Sean Reifschneider, tummy.com, ltd.
-#  All Rights Reserved.
+#  This implements the website logic, this is where you would do any dynamic
+#  programming for the site pages and render them from templaes.
+#
+#  NOTE: This file will need heavy customizations.  Search for "XXX".
+#
+#  See the README.md for more information
+#
+#  Written by Sean Reifschneider <jafo@jafo.ca>, 2013
+#
+#  Part of the python-bottle-skeleton project at:
+#
+#      https://github.com/linsomniac/python-bottle-skeleton
+#
+#  I hereby place this work, python-bottle-wrapper, into the public domain.
 
+#  XXX Remove these two lines if you aren't using a database
 from bottledbwrap import dbwrap
 import model
-from bottle import (view, debug, TEMPLATE_PATH, Bottle, static_file, request,
+
+from bottle import (view, TEMPLATE_PATH, Bottle, static_file, request,
         redirect)
+
+#  XXX Remove these lines and the next section if you aren't processing forms
 from wtforms import (Form, TextField, DateTimeField, SelectField,
         PasswordField, validators)
 
-
-def web_interface():
-    app = Bottle()
-    debug(True)
-    TEMPLATE_PATH.insert(0, '/path-to/views')
-
-    routes(app)
-
-    return app
-
-
-#  Form validation example
+#  XXX Form validation example
 class NewUserFormProcessor(Form):
     name = TextField('Username', [validators.Length(min=4, max=25)])
     full_name = TextField('Full Name', [validators.Length(min=4, max=60)])
@@ -35,16 +40,23 @@ class NewUserFormProcessor(Form):
             ])
     confirm = PasswordField('Repeat Password')
 
+
 def routes(app):
     #  XXX Define application routes in this class
+    #  Pretty much this entire function needs to be written for your
+
+    TEMPLATE_PATH.insert(0, 'views')   #  XXX Location of HTML templates
+
+    #  XXX Routes to static content
     @app.route('/<path:re:favicon.ico>')
     @app.route('/static/<path:path>')
     def static(path):
         'Serve static content.'
         return static_file(path, root='static/')
 
-    @app.route('/', name='index')
-    @view('index')
+    #  XXX Index page
+    @app.route('/', name='index')                  #  XXX URL to page
+    @view('index')                                 #  XXX Name of template
     def index():
         'A simple form that shows the date'
 
@@ -52,10 +64,12 @@ def routes(app):
 
         now = datetime.datetime.now()
 
+        #  any local variables and "app" can be used in the template
         return dict(locals().items() + [('app', app)])
 
-    @app.route('/users', name='user_list')
-    @view('users')
+    #  XXX User list page
+    @app.route('/users', name='user_list')        #  XXX URL to page
+    @view('users')                                #  XXX Name of template
     def user_list():
         'A simple page from a dabase.'
 
@@ -63,19 +77,23 @@ def routes(app):
 
         users = db.query(model.User).order_by(model.User.name)
 
+        #  any local variables and "app" can be used in the template
         return dict(locals().items() + [('app', app)])
 
-    @app.route('/users/<username>', name='user')
-    @view('user')
+    #  XXX User details dynamically-generated URL
+    @app.route('/users/<username>', name='user')  #  XXX URL to page
+    @view('user')                                 #  XXX Name of template
     def user_info(username):
         'A simple page from a dabase.'
 
         user = model.user_by_name(username)
 
+        #  any local variables and "app" can be used in the template
         return dict(locals().items() + [('app', app)])
 
-    @app.route('/form')
-    @view('form')
+    #  XXX A simple form example, not used on the demo site
+    @app.route('/form')                           #  XXX URL to page
+    @view('form')                                 #  XXX Name of template
     def static_form():
         'A simple form processing example'
 
@@ -86,11 +104,13 @@ def routes(app):
             #  if successful
             redirect('/users/%s' % form.name.data)
 
+        #  any local variables and "app" can be used in the template
         return dict(locals().items() + [('app', app)])
 
-    @app.get('/new-user', name='user_new')
-    @app.post('/new-user')
-    @view('user-new')
+    #  XXX Create a new user, form processing, including GET and POST
+    @app.get('/new-user', name='user_new')        #  XXX GET URL to page
+    @app.post('/new-user')                        #  XXX POST URL to page
+    @view('user-new')                             #  XXX Name of template
     def new_user():
         'A sample of interacting with a form and a database.'
 
@@ -107,4 +127,5 @@ def routes(app):
 
             redirect(app.get_url('user', username=form.name.data))
 
+        #  any local variables and "app" can be used in the template
         return dict(locals().items() + [('app', app)])

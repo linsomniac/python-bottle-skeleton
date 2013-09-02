@@ -1,6 +1,20 @@
 #!/usr/bin/env python
 #
-#  Test the database model.
+#  Test the web page code.
+#
+#  See the sections marked with "XXX" to customize for your application.
+#  Or remove this file and references to "model" if you aren't using a
+#  database.
+#
+#  See the README.md for more information
+#
+#  Written by Sean Reifschneider <jafo@jafo.ca>, 2013
+#
+#  Part of the python-bottle-skeleton project at:
+#
+#      https://github.com/linsomniac/python-bottle-skeleton
+#
+#  I hereby place this work, python-bottle-wrapper, into the public domain.
 
 import sys
 sys.path.append('..')

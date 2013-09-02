@@ -1,7 +1,25 @@
 #!/usr/bin/env python
 #
-#  Copyright (c) 2013, Sean Reifschneider, tummy.com, ltd.
-#  All Rights Reserved.
+#  SQLAlchemy database model.  This defines your database using SQLAlchemy
+#  "declarative" format.  See:
+#
+#      http://docs.sqlalchemy.org/en/rel_0_8/orm/extensions/declarative.html
+#
+#  for more information
+#
+#  See the sections marked with "XXX" to customize for your application.
+#  Or remove this file and references to "model" if you aren't using a
+#  database.
+#
+#  See the README.md for more information
+#
+#  Written by Sean Reifschneider <jafo@jafo.ca>, 2013
+#
+#  Part of the python-bottle-skeleton project at:
+#
+#      https://github.com/linsomniac/python-bottle-skeleton
+#
+#  I hereby place this work, python-bottle-wrapper, into the public domain.
 
 from sqlalchemy.ext.declarative import declarative_base
 Base = declarative_base()
@@ -11,7 +29,7 @@ from sqlalchemy.orm import relationship, backref
 from sqlalchemy.pool import Pool
 
 def initdb():
-    '''Initialize the database structure.'''
+    '''Populate an empty database with the schema'''
     from bottledbwrap import dbwrap
 
     dbwrap.connect()
@@ -42,6 +60,7 @@ class User(Base):
     full_name = Column(String(length=60), nullable=False)
     email_address = Column(String(length=60), nullable=False)
 
+#  XXX A database-related function
 def user_by_name(name):
     from bottledbwrap import dbwrap
     db = dbwrap.session()

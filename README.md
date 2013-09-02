@@ -20,30 +20,82 @@ using bottle:
 
   * Templating including standard site page template.
 
-Usage
------
+It does **not** include user session handling, as that varies widely by
+application.
 
-To try out:
+Quickstart Bottle Tutorial
+--------------------------
 
-  * Install python-sqlalchemy python-sqlalchemy-ext python-wtforms
+If you just want to understand Bottle, this is probably a pretty good
+choice.  It is as simple as possible, while also covering **all** the
+things you are likely need to build a (fairly) complex Bottle-powered site.
+
+To use this as a tutorial:
+
+  * View and run `simple-example`.  This is a small program with a single
+    dynamic page using the date and time via a template.
+
+  * Optional, requires SQLAlchemy and wtforms to be installed:
+
+    * Install python-sqlalchemy python-sqlalchemy-ext python-wtforms
+
+    * Run: `DBCREDENTIALSTR=sqlite:///:memory: PYTHONPATH=lib python app-controller test-server`
+
+    * In your browser go to http://127.0.0.1:8080/ and click around the site
+      to understand what it does.
+
+  * Look at the code in `website.py`, particularly the sections marked by
+    "XXX" .
+
+  * Look at the tests in `tests/test_web.py` to see how tests can be
+    performed against the web application.
+
+  * Review `model.py` to see how to define a database with "SQLAlchemy
+    declarative".  Particularly review the sections marked with "XXX".
+
+  * Look at the tests in `tests/test_model.py` for examples of testing the
+    database model.
+
+  * Review `app-controller` if you want to understand how the site
+    integrates with WSGI servers, CGI servers, or the standalone test
+    server.
+
+Quickstart Building Your Own Site
+---------------------------------
+
+If you would like to use this skeleton to create a website, which is why I
+initially created this git repository:
+
+  * If you are going to be using a database, you will need the following files:
+
+    * `model.py` is the database model.  Copy it and modify the sections
+      marked with "XXX".
+
+    * `tests/test_model.py` has tests of the model, you will need to
+      modify it to test your model, then you can run it to make sure your
+      model is as you expect.
+
+  * If you are **not** going to be using a database:
+
+    * Delete `model.py`, `tests/test_model.py`, and `lib/bottledbwrap.py`.
+
+    * In `website.py` remove the "dbwrap" line.
+
+  * Modify `website.py` to customize your routes, page processing code,
+    and form validation and processing.
+
+  * Modify and create HTML template files in the `views` subdirectory.
+
+  * Run `make` to test the code.
 
   * Run: `DBCREDENTIALSTR=sqlite:///:memory: PYTHONPATH=lib python app-controller test-server`
 
-  * In a browser go to http://127.0.0.1:8080/
+  * Go to http://127.0.0.1:8080/ to test your application.
 
-To use:
+  * Deploy it using either the CGI or WSGI methods (discussed below).
 
-  * Check out repository.
-
-  * For Database: Install SQLAlchemy (Ubuntu: `sudo apt-get install
-    python-sqlalchemy python-sqlalchemy-ext`).
-
-  * For Forms: Install WTForms (Ubuntu: `sudo apt-get install python-wtforms`).
-
-  * Modify "website.py" to create your routes and code associated with
-    them.
-
-Setting up Apache:
+Setting Up Apache
+-----------------
 
   * Install mod\_wsgi and Apache (Ubuntu:`sudo apt-get install
     libapache2-mod-wsgi`).
@@ -60,6 +112,9 @@ Structure of Project
 --------------------
 
 There are the following components to the project:
+
+  * `simple-example`: This is the simplest example, a small stand-alone
+    program.
 
   * `app-controller`: This is a both a WSGI app and a shell script.  It can
     be used as your WSGI application, but it also can be run with:
@@ -97,6 +152,9 @@ There are the following components to the project:
     project](https://github.com/linsomniac/python-unittest-skeleton) for more
     code testing examples.
 
+  * `conf/application.conf`: An Apache config file for serving the
+    application.
+
 About bottledbwrap
 ------------------
 
@@ -116,3 +174,12 @@ You can provide database credentials in the following ways:
   * In the file specified by the environment variable "DBCREDENTIALS".
 
   * Directly in the environment variable "DBCREDENTIALSSTR".
+
+License
+-------
+
+This code, with the exception of `lib/bottle.py` is entirely in the public
+domain.
+
+`lib/bottle.py` is a convenience copy of the Bottle library.  Details on
+its license are available at: http://bottlepy.org/docs/dev/

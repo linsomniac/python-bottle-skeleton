@@ -1,7 +1,14 @@
 #!/usr/bin/env python
 #
-#  Copyright (c) 2012, 2013 Sean Reifschneider, tummy.com, ltd.
-#  All Rights Reserved.
+#  See the README.md for more information
+#
+#  Written by Sean Reifschneider <jafo@jafo.ca>, 2013
+#
+#  Part of the python-bottle-skeleton project at:
+#
+#      https://github.com/linsomniac/python-bottle-skeleton
+#
+#  I hereby place this work, python-bottle-wrapper, into the public domain.
 
 '''Database connection wrapper for python-bottle-skeleton.
 '''
