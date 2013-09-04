@@ -19,20 +19,7 @@
 
 import sys
 import os
-
-
-def web_interface():
-    '''Create an application instance.  You probably don't need to modify
-    this, it is just here to simplify other code.'''
-
-    import website
-    import bottle
-
-    app = bottle.Bottle()
-
-    website.routes(app)
-
-    return app
+import website
 
 
 if __name__.startswith('_mod_wsgi_'):
@@ -40,7 +27,7 @@ if __name__.startswith('_mod_wsgi_'):
     sys.path.append('lib')
     sys.path.append('.')
 
-    application = web_interface()
+    application = website.build_application()
 
 if __name__ == '__main__':
     sys.path.append('lib')
@@ -50,7 +37,7 @@ if __name__ == '__main__':
 
     if os.environ.get('GATEWAY_INTERFACE'):
         #  Called from CGI
-        app = web_interface()
+        app = website.build_application()
         bottle.run(app, server=bottle.CGIServer)
         sys.exit(0)
 
@@ -61,7 +48,7 @@ if __name__ == '__main__':
         if os.environ.get('DBCREDENTIALSTR') == 'sqlite:///:memory:':
             model.initdb()
             model.create_sample_data()
-        app = web_interface()
+        app = website.build_application()
         bottle.debug(True)
         bottle.run(app, reloader=True, host='127.0.0.1', port=8080)
         sys.exit(0)

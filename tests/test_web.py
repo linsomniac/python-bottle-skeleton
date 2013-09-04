@@ -39,7 +39,7 @@ class Test(unittest.TestCase):
 		from webtest import TestApp
 		from bottle import TEMPLATE_PATH
 		TEMPLATE_PATH.insert(0, '../views')
-		self.app = website.web_interface()
+		self.app = website.build_application()
 		self.harness = TestApp(self.app)
 
 	def test_index_wsgi(self):

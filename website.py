@@ -20,7 +20,7 @@ from bottledbwrap import dbwrap
 import model
 
 from bottle import (view, TEMPLATE_PATH, Bottle, static_file, request,
-        redirect, BaseTemplate)
+        redirect, BaseTemplate, Bottle)
 
 #  XXX Remove these lines and the next section if you aren't processing forms
 from wtforms import (Form, TextField, DateTimeField, SelectField,
@@ -41,11 +41,14 @@ class NewUserFormProcessor(Form):
     confirm = PasswordField('Repeat Password')
 
 
-def routes(app):
+def build_application():
     #  XXX Define application routes in this class
+
+    app = Bottle()
+
     #  Pretty much this entire function needs to be written for your
 
-    BaseTemplate.defaults['app'] = app
+    BaseTemplate.defaults['app'] = app #  XXX Template global variable
     TEMPLATE_PATH.insert(0, 'views')   #  XXX Location of HTML templates
 
     #  XXX Routes to static content
@@ -130,3 +133,6 @@ def routes(app):
 
         #  any local variables can be used in the template
         return locals()
+
+    #  REQUIRED: return the application handle herre
+    return app
