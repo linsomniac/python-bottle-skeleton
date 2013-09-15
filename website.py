@@ -20,11 +20,12 @@ from bottledbwrap import dbwrap
 import model
 
 from bottle import (view, TEMPLATE_PATH, Bottle, static_file, request,
-        redirect, BaseTemplate, Bottle)
+        redirect, BaseTemplate)
 
 #  XXX Remove these lines and the next section if you aren't processing forms
 from wtforms import (Form, TextField, DateTimeField, SelectField,
         PasswordField, validators)
+
 
 #  XXX Form validation example
 class NewUserFormProcessor(Form):
@@ -48,8 +49,8 @@ def build_application():
 
     #  Pretty much this entire function needs to be written for your
 
-    BaseTemplate.defaults['app'] = app #  XXX Template global variable
-    TEMPLATE_PATH.insert(0, 'views')   #  XXX Location of HTML templates
+    BaseTemplate.defaults['app'] = app  # XXX Template global variable
+    TEMPLATE_PATH.insert(0, 'views')    # XXX Location of HTML templates
 
     #  XXX Routes to static content
     @app.route('/<path:re:favicon.ico>')
@@ -59,8 +60,8 @@ def build_application():
         return static_file(path, root='static/')
 
     #  XXX Index page
-    @app.route('/', name='index')                  #  XXX URL to page
-    @view('index')                                 #  XXX Name of template
+    @app.route('/', name='index')                  # XXX URL to page
+    @view('index')                                 # XXX Name of template
     def index():
         'A simple form that shows the date'
 
@@ -72,8 +73,8 @@ def build_application():
         return locals()
 
     #  XXX User list page
-    @app.route('/users', name='user_list')        #  XXX URL to page
-    @view('users')                                #  XXX Name of template
+    @app.route('/users', name='user_list')        # XXX URL to page
+    @view('users')                                # XXX Name of template
     def user_list():
         'A simple page from a dabase.'
 
@@ -85,8 +86,8 @@ def build_application():
         return locals()
 
     #  XXX User details dynamically-generated URL
-    @app.route('/users/<username>', name='user')  #  XXX URL to page
-    @view('user')                                 #  XXX Name of template
+    @app.route('/users/<username>', name='user')  # XXX URL to page
+    @view('user')                                 # XXX Name of template
     def user_info(username):
         'A simple page from a dabase.'
 
@@ -96,8 +97,8 @@ def build_application():
         return locals()
 
     #  XXX A simple form example, not used on the demo site
-    @app.route('/form')                           #  XXX URL to page
-    @view('form')                                 #  XXX Name of template
+    @app.route('/form')                           # XXX URL to page
+    @view('form')                                 # XXX Name of template
     def static_form():
         'A simple form processing example'
 
@@ -112,9 +113,9 @@ def build_application():
         return locals()
 
     #  XXX Create a new user, form processing, including GET and POST
-    @app.get('/new-user', name='user_new')        #  XXX GET URL to page
-    @app.post('/new-user')                        #  XXX POST URL to page
-    @view('user-new')                             #  XXX Name of template
+    @app.get('/new-user', name='user_new')        # XXX GET URL to page
+    @app.post('/new-user')                        # XXX POST URL to page
+    @view('user-new')                             # XXX Name of template
     def new_user():
         'A sample of interacting with a form and a database.'
 

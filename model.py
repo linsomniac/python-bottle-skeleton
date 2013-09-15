@@ -28,12 +28,14 @@ from sqlalchemy.exc import DisconnectionError
 from sqlalchemy.orm import relationship, backref
 from sqlalchemy.pool import Pool
 
+
 def initdb():
     '''Populate an empty database with the schema'''
     from bottledbwrap import dbwrap
 
     dbwrap.connect()
     dbwrap.Base.metadata.create_all()
+
 
 @event.listens_for(Pool, 'checkout')
 def ping_connection(dbapi_connection, connection_record, connection_proxy):
@@ -59,6 +61,7 @@ class User(Base):
     name = Column(String(length=20), nullable=False)
     full_name = Column(String(length=60), nullable=False)
     email_address = Column(String(length=60), nullable=False)
+
 
 #  XXX A database-related function
 def user_by_name(name):
